@@ -4,6 +4,7 @@ const supertest = require("supertest")
 
 const BASE_URL = "/api/v1/users"
 let TOKEN
+// let TOKEN_2
 
 beforeAll(async () => {
   const user = {
@@ -55,4 +56,38 @@ test("GET -> BASE_URL, should return statusCode 200, and res.body.length === 2",
   expect(res.statusCode).toBe(200)
   expect(res.body).toBeDefined()
   expect(res.body).toHaveLength(2)
+})
+
+test("POST -> 'BASE_URL/LOGIN', should return statusCode 200, and res.body.user.email === hits.email", async () => {
+  const hits = {
+    email: user.email,
+    password: user.password,
+  }
+
+  const res = await request(app)
+    .post(`${BASE_URL}/login`)
+    .send(hits)
+  // console.log(res.body)
+
+  expect(res.statusCode).toBe(200)
+  expect(res.body).toBeDefined()
+  expect(res.body.user).toBeDefined()
+  expect(res.body.token).toBeDefined()
+  expect(res.body.user.email).toBe(hits.email)
+})
+
+//LOGIN -> error
+test("POST -> 'BASE_URL/LOGIN', should return statusCode 401", async () => {
+  const hits = {
+    email: "maria@gmail.com",
+    password: "invalidpassword",
+  }
+
+  const res = await request(app)
+    .post(`${BASE_URL}/login`)
+    .send(hits)
+
+  console.log(res.body)
+
+  expect(res.statusCode).toBe(401)
 })

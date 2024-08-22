@@ -39,7 +39,7 @@ const login = catchError(async (req, res) => {
     where: { email },
   })
   if (!user)
-    return res.status(404).json({
+    return res.status(401).json({
       message: "user not found",
     })
 
@@ -48,7 +48,7 @@ const login = catchError(async (req, res) => {
     user.password
   )
   if (!isValid)
-    return res.sendStatus(404).json({
+    return res.sendStatus(401).json({
       message: "user not found",
     })
 
