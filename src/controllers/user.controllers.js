@@ -1,5 +1,7 @@
 const catchError = require('../utils/catchError')
 const User = require('../models/User')
+const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 
 const getAll = catchError(async (req, res) => {
   const results = await User.findAll()
@@ -25,9 +27,29 @@ const update = catchError(async (req, res) => {
   return res.json(result[1][0])
 })
 
+const login = catchError(async (req, res) => {
+  const { email, password } = req.body
+
+  const user = await User.findOne({ where: { email } })
+  if (!user)
+    return res.status(404).json({
+      message: 'user not found',
+    })
+
+  const isValid = await bcrypt.compare(password, user.password)
+  if (!isValid) return res.sendStatus(404).json({ message: 'user not found' })
+
+  const token = jwt.sign({ user }, process.env.TOKEN_SECRET, {
+    expiresIn: '1d',
+  })
+
+  return res.json({ user, token })
+})
+
 module.exports = {
   getAll,
   create,
   remove,
   update,
+  login,
 }
