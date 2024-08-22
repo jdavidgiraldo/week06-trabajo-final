@@ -5,6 +5,7 @@ const supertest = require("supertest")
 const BASE_URL = "/api/v1/users"
 let TOKEN
 // let TOKEN_2
+let userId
 
 beforeAll(async () => {
   const user = {
@@ -39,6 +40,8 @@ test("POST -> BASE_URL, should return statusCode 201, and res.body.firstName ===
     .post(BASE_URL)
     .send(user)
 
+  userId = res.body.id
+
   expect(res.statusCode).toBe(201)
   expect(res.body).toBeDefined()
   columns.forEach((column) => {
@@ -47,6 +50,7 @@ test("POST -> BASE_URL, should return statusCode 201, and res.body.firstName ===
   // expect(res.body.firstName).toBe(user.firstName)
 })
 
+//GETALL
 test("GET -> BASE_URL, should return statusCode 200, and res.body.length === 2", async () => {
   const res = await supertest(app)
     .get(BASE_URL)
@@ -58,6 +62,7 @@ test("GET -> BASE_URL, should return statusCode 200, and res.body.length === 2",
   expect(res.body).toHaveLength(2)
 })
 
+//LOGIN->LOGIN
 test("POST -> 'BASE_URL/LOGIN', should return statusCode 200, and res.body.user.email === hits.email", async () => {
   const hits = {
     email: user.email,
@@ -90,4 +95,31 @@ test("POST -> 'BASE_URL/LOGIN', should return statusCode 401", async () => {
   console.log(res.body)
 
   expect(res.statusCode).toBe(401)
+})
+
+//PUT
+test("PUT -> 'BASE_URL/:ID', should return statusCode 200, and res.body.firstName === userUpdate", async () => {
+  const userUpdate = {
+    firstName: "John",
+  }
+
+  const res = await request(app)
+    .put(`${BASE_URL}/${userId}`)
+    .send(userUpdate)
+    .set("Authorization", `Bearer ${TOKEN}`)
+
+  expect(res.statusCode).toBe(200)
+  expect(res.body).toBeDefined()
+  expect(res.body.firstName).toBe(
+    userUpdate.firstName
+  )
+})
+
+//delete
+test("DELETE -> 'BASE_URL/:ID', should return statusCode 204", async () => {
+  const res = await request(app)
+    .delete(`${BASE_URL}/${userId}`)
+    .set("Authorization", `Bearer ${TOKEN}`)
+
+  expect(res.statusCode).toBe(204)
 })
