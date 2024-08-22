@@ -1,6 +1,5 @@
 require("../models");
 const sequelize = require("../utils/connection");
-const userCreate = require("./createData/userCreate");
 
 const testMigrate = async () => {
   try {
@@ -8,7 +7,6 @@ const testMigrate = async () => {
       force: true,
     });
     console.log("DB reset ✅😁😊");
-    await userCreate();
     process.exit();
   } catch (error) {
     console.error(error);
