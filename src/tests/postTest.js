@@ -1,16 +1,16 @@
-require("../models");
-const sequelize = require("../utils/connection");
+require("../models")
+const sequelize = require("../utils/connection")
 
 const testMigrate = async () => {
   try {
     await sequelize.sync({
       force: true,
-    });
-    console.log("DB reset ✅😁😊");
-    process.exit();
+    })
+    console.log("DB reset ✅😁😊")
+    process.exit()
   } catch (error) {
-    console.error(error);
+    console.error(error)
   }
-};
+}
 
-testMigrate();
+testMigrate()
