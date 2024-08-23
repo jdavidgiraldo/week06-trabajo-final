@@ -36,9 +36,7 @@ test("POST -> BASE_URL, should return statusCode 201, and res.body.firstName ===
     "email",
     "phone",
   ]
-  const res = await request(app)
-    .post(BASE_URL)
-    .send(user)
+  const res = await request(app).post(BASE_URL).send(user)
 
   userId = res.body.id
 
@@ -92,7 +90,7 @@ test("POST -> 'BASE_URL/LOGIN', should return statusCode 401", async () => {
     .post(`${BASE_URL}/login`)
     .send(hits)
 
-  console.log(res.body)
+  // console.log(res.body)
 
   expect(res.statusCode).toBe(401)
 })
@@ -110,9 +108,7 @@ test("PUT -> 'BASE_URL/:ID', should return statusCode 200, and res.body.firstNam
 
   expect(res.statusCode).toBe(200)
   expect(res.body).toBeDefined()
-  expect(res.body.firstName).toBe(
-    userUpdate.firstName
-  )
+  expect(res.body.firstName).toBe(userUpdate.firstName)
 })
 
 //delete
