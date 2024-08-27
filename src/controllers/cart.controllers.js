@@ -7,14 +7,15 @@ const getAll = catchError(async (req, res) => {
   const userId = req.user.id
   const results = await Cart.findAll({
     where: { userId },
+    attributes: { exclude: ["createdAt", "updatedAt"] }, //do not show this data in the json of the cart
     include: [
       {
         model: Product,
-        attributes: { exclude: ["updatedAt", "createdAt"] },
+        attributes: { exclude: ["updatedAt", "createdAt"] }, //do not show this data in the json of the cart
         include: [
           {
             model: Category,
-            attributes: ["name", "id"],
+            attributes: ["name", "id"], //show this data in the json of the cart
           },
         ],
       },
@@ -22,12 +23,6 @@ const getAll = catchError(async (req, res) => {
   })
   return res.json(results)
 })
-
-// const create = catchError(async (req, res) => {
-//   const userId = req.user.id
-//   const result = await Cart.create({ ...req.body, userId });
-//   return res.status(201).json(result);
-// });
 
 const create = catchError(async (req, res) => {
   const userId = req.user.id
@@ -42,14 +37,15 @@ const getOne = catchError(async (req, res) => {
   const { id } = req.params
   const result = await Cart.findByPk(id, {
     where: { userId },
+    attributes: { exclude: ["createdAt", "updatedAt"] }, //do not show this data in the json of the cart
     include: [
       {
         model: Product,
-        attributes: { exclude: ["updatedAt", "createdAt"] },
+        attributes: { exclude: ["updatedAt", "createdAt"] }, //do not show this data in the json of the cart
         include: [
           {
             model: Category,
-            attributes: ["name", "id"],
+            attributes: ["name", "id"], //show this data in the json of the cart
           },
         ],
       },

@@ -25,14 +25,14 @@ beforeAll(async () => {
   // console.log(TOKEN);
 
   category = await Category.create({
-    name: "ropa para dama",
+    name: "shoes",
   })
 
   product = {
-    title: "Jeans blue dama",
-    description: "lorem 20",
-    price: 12.2,
-    categoryId: category.id,
+    title: "nike 478",
+    description: "lorem 809",
+    price: 25.9,
+    categoryId: 1,
   }
 })
 
