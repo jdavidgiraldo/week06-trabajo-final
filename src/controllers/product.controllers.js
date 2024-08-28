@@ -42,10 +42,21 @@ const update = catchError(async (req, res) => {
   return res.json(result[1][0])
 })
 
+const setImage = catchError(async (req, res) => {
+  // products/:id/images
+  const { id } = req.params
+  const products = await Product.findByPk(id)
+  if (!products) return res.sendStatus(404)
+  await products.setProductImgs(req.body)
+  const images = await products.getProductImgs()
+  return res.json(images)
+})
+
 module.exports = {
   getAll,
   create,
   getOne,
   remove,
   update,
+  setImage,
 }

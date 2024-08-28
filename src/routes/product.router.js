@@ -4,6 +4,7 @@ const {
   getOne,
   remove,
   update,
+  setImage,
 } = require("../controllers/product.controllers")
 const express = require("express")
 const { verifyJwt } = require("../utils/verifyJWT")
@@ -14,6 +15,8 @@ routerProduct
   .route("/")
   .get(verifyJwt, getAll) //🔐
   .post(create)
+
+routerProduct.route("/:id").post(verifyJwt, setImage) //🔐
 
 routerProduct
   .route("/:id")
