@@ -10,7 +10,10 @@ const { verifyJwt } = require("../utils/verifyJWT")
 
 const routerProduct = express.Router()
 
-routerProduct.route("/").get(verifyJwt, getAll).post(create) //🔐
+routerProduct
+  .route("/")
+  .get(verifyJwt, getAll) //🔐
+  .post(create)
 
 routerProduct
   .route("/:id")

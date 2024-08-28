@@ -17,9 +17,7 @@ beforeAll(async () => {
     password: "juan1234",
   }
 
-  const res = await request(app)
-    .post(BASE_URL_LOGIN)
-    .send(hits)
+  const res = await request(app).post(BASE_URL_LOGIN).send(hits)
 
   TOKEN = res.body.token
   // console.log(TOKEN);
@@ -61,7 +59,9 @@ test("POST -> 'BASE_URL', should return status code 201, and res.body.title === 
 })
 
 test("GET -> 'BASE_URL', should return statusCode 200, and res.body.length === 1", async () => {
-  const res = await request(app).get(BASE_URL)
+  const res = await request(app)
+    .get(BASE_URL)
+    .set("Authorization", `Bearer ${TOKEN}`)
 
   // console.log(res.body)
 
@@ -75,9 +75,7 @@ test("GET -> 'BASE_URL', should return statusCode 200, and res.body.length === 1
 })
 
 test("GET -> 'BASE_URL/:id', should return status code 200, and res.body.title === product.title", async () => {
-  const res = await request(app).get(
-    `${BASE_URL}/${productId}`
-  )
+  const res = await request(app).get(`${BASE_URL}/${productId}`)
 
   // console.log(res.body);
 
